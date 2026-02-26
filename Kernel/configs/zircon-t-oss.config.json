@@ -13,7 +13,7 @@
         "repo": "https://github.com/kdrag0n/proton-clang",
         "branch": "master",
         "binaryEnv": ["./bin"]
-      },
+      }
     ],
     "enableCcache": true,
     "params": {
