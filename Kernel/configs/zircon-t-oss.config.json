@@ -14,11 +14,6 @@
         "branch": "master",
         "binaryEnv": ["./bin"]
       },
-      {
-        "name": "",
-        "url": "",
-        "binaryEnv": []
-      }
     ],
     "enableCcache": true,
     "params": {
