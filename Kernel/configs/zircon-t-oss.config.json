@@ -1,0 +1,44 @@
+[
+  {
+    "kernelSource": {
+      "name": "Redmi Note 13 Pro+",
+      "repo": "https://github.com/MiCode/Xiaomi_Kernel_OpenSource.git",
+      "branch": "zircon-t-oss",
+      "device": "zircon",
+      "defconfig": "gki_defconfig"
+    },
+    "toolchains": [
+      {
+        "name": "proton-clang",
+        "repo": "https://github.com/kdrag0n/proton-clang",
+        "branch": "master",
+        "binaryEnv": ["./bin"]
+      },
+      {
+        "name": "",
+        "url": "",
+        "binaryEnv": []
+      }
+    ],
+    "enableCcache": true,
+    "params": {
+      "ARCH": "arm64",
+      "CC": "clang",
+      "externalCommands": {
+        "CROSS_COMPILE": "proton-clang/bin/aarch64-linux-gnu-",
+        "CROSS_COMPILE_ARM32": "proton-clang/bin/arm-linux-gnueabi-",
+        "CLANG_TRIPLE": "aarch64-linux-gnu-"
+      }
+    },
+    "AnyKernel3": {
+      "use": false,
+      "release": true,
+      "custom": {
+        "repo": "",
+        "branch": ""
+      }
+    },
+    "enableKernelSU": false,
+    "enableLXC": false
+  }
+]
