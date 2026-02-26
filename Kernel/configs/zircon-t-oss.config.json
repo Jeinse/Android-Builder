@@ -1,7 +1,7 @@
 [
   {
     "kernelSource": {
-      "name": "Redmi Note 13 Pro+",
+      "name": "Redmi_Note_13_Pro+",
       "repo": "https://github.com/MiCode/Xiaomi_Kernel_OpenSource.git",
       "branch": "zircon-t-oss",
       "device": "zircon",
