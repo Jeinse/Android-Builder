@@ -1,12 +1,7 @@
 name: Build kernels
 
 on:
-  push:
-    paths:
-      - ".github/workflows/kernel.yml"
   workflow_dispatch:
-  schedule:
-    - cron: "14 13 * * 5"
 
 jobs:
   Read-configuration:
