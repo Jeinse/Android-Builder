@@ -1,11 +1,11 @@
 [
   {
     "kernelSource": {
-      "name": "Redmi_Note_13_Pro+",
-      "repo": "https://github.com/Jeinse/android_kernel_xiaomi_zircon.git",
-      "branch": "i-hate-kernels",
-      "device": "zircon",
-      "defconfig": "vendor/zircon_defconfig"
+      "name": "android_kernel_common_oneplus_sm8750",
+      "repo": "https://github.com/OnePlusOSS/android_kernel_common_oneplus_sm8750.git",
+      "branch": "sm8750_b_16.0.0_ace_6",
+      "device": "PLQ110",
+      "defconfig": "gki_defconfig"
     },
     "toolchains": [
       {
