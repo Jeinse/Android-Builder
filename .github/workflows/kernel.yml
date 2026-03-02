@@ -127,8 +127,11 @@ jobs:
           # tree ${{ env.KERNEL_NAME }}
       - name: add haide
         run: |
-          sudo git clone --recursive --depth=1 -j $(nproc) --branch master https://github.com/realme-kernel-opensource/realme_GTneo2-Q5pro-GTMasterExploratory-AndroidT-vendor-source.git /haide
-          sudo cp -r /haide/vendor /home/runner/work/Android-Builder
+          #sudo git clone --recursive --depth=1 -j $(nproc) --branch master https://github.com/realme-kernel-opensource/realme_GTneo2-Q5pro-GTMasterExploratory-AndroidT-vendor-source.git /haide
+          #sudo cp -r /haide/vendor /home/runner/work/Android-Builder
+          sudo git clone https://github.com/realme-kernel-opensource/realme_GTneo2-Q5pro-GTMasterExploratory-AndroidT-vendor-source.git /haide
+          #sudo cp -r /haide/vendor ${{ env.KERNEL_NAME }}/
+          #sudo cp -r /haide/kernel ${{ env.KERNEL_NAME }}/
       - name: 💫 Get toolchains
         env:
           toolchains: "${{ toJSON(matrix.CONFIG.toolchains) }}"
