@@ -125,8 +125,8 @@ jobs:
         run: |
           git clone --recursive --depth=1 -j $(nproc) --branch ${{ env.KERNEL_BRANCH }} ${{ env.KERNEL_REPO }} ${{ env.KERNEL_NAME }}
           # tree ${{ env.KERNEL_NAME }}
-      #- name: add haide
-        #run: |
+      - name: add haide
+        run: |
           sudo git clone --recursive --depth=1 -j $(nproc) --branch master https://github.com/Jeinse/realme_GTneo2-Q5pro-GTMasterExploratory-AndroidT-vendor-source.git /haide
           sudo cp -r /haide/vendor /home/runner/work/Android-Builder
       - name: 💫 Get toolchains
