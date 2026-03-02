@@ -5,7 +5,7 @@
       "repo": "https://github.com/realme-kernel-opensource/realme_GTneo2-Q5pro-GTMasterExploratory-AndroidT-kernel-source.git",
       "branch": "master",
       "device": "RMX3366",
-      "defconfig": "vendor/kona-iot_defconfig"
+      "defconfig": "vendor/bengal_defconfig"
     },
     "toolchains": [
       {
