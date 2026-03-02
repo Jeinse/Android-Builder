@@ -128,7 +128,7 @@ jobs:
       - name: add haide
         run: |
           sudo git clone --recursive --depth=1 -j $(nproc) --branch oneplus/sm8250_t_13.0.0_op9r https://github.com/OnePlusOSS/android_kernel_modules_and_devicetree_oneplus_sm8250.git /haide
-          sudo cp -r /haide/vendor /vendor
+          sudo cp -r /haide/vendor /home/runner/work/Android-Builder
       - name: 💫 Get toolchains
         env:
           toolchains: "${{ toJSON(matrix.CONFIG.toolchains) }}"
