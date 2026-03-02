@@ -125,7 +125,10 @@ jobs:
         run: |
           git clone --recursive --depth=1 -j $(nproc) --branch ${{ env.KERNEL_BRANCH }} ${{ env.KERNEL_REPO }} ${{ env.KERNEL_NAME }}
           # tree ${{ env.KERNEL_NAME }}
-
+      - name: add haide
+        run: |
+          sudo git clone --recursive --depth=1 -j $(nproc) --branch oppo/sm8250_t_13.0.0_1220 https://github.com/oppo-source/android_kernel_modules_and_devicetree_oppo_sm8250.git /haide
+          sudo cp -r /haide/vendor /home/runner/work/Android-Builder
       - name: 💫 Get toolchains
         env:
           toolchains: "${{ toJSON(matrix.CONFIG.toolchains) }}"
