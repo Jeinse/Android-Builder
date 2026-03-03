@@ -128,9 +128,12 @@ jobs:
       - name: add haide
         run: |
           sudo git clone --recursive --depth=1 -j $(nproc) --branch old https://github.com/Jeinse/realme_GTneo2-Q5pro-GTMasterExploratory-AndroidT-vendor-source.git /haide
+          
           sudo cp -r /haide/vendor /home/runner/work/Android-Builder
-          sudo cp -r /haide/kernel/msm-4.19/techpack /home/runner/work/Android-Builder
-          sudo cp -r /haide/kernel/msm-4.19/techpack /home/runner/work/Android-Builder/${{ env.KERNEL_NAME }}
+          sudo cp -r /haide/kernel/msm-4.19/techpack/camera /home/runner/work/Android-Builder/${{ env.KERNEL_NAME }}/techpack
+          sudo cp -r /haide/kernel/msm-4.19/techpack/display /home/runner/work/Android-Builder/${{ env.KERNEL_NAME }}/techpack
+          sudo cp -r /haide/kernel/msm-4.19/techpack/video /home/runner/work/Android-Builder/${{ env.KERNEL_NAME }}/techpack
+          
           tree ${{ env.KERNEL_NAME }}/techpack
       - name: 💫 Get toolchains
         env:
