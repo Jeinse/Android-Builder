@@ -131,10 +131,7 @@ jobs:
           sudo cp -r /haide/vendor /home/runner/work/Android-Builder
           sudo cp -r /haide/kernel/msm-4.19/techpack /home/runner/work/Android-Builder
           sudo cp -r /haide/kernel/msm-4.19/techpack /home/runner/work/Android-Builder/${{ env.KERNEL_NAME }}
-          #sudo cp -r /haide/kernel /home/runner/work/Android-Builder
-          #sudo cp -r /haide/kernel /home/runner/work/Android-Builder/Android-Builder/
-          tree ${{ env.KERNEL_NAME }}
-          tree /home/runner/work/Android-Builder/Android-Builder
+          tree ${{ env.KERNEL_NAME }}/techpack
       - name: 💫 Get toolchains
         env:
           toolchains: "${{ toJSON(matrix.CONFIG.toolchains) }}"
