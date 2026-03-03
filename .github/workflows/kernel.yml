@@ -133,8 +133,6 @@ jobs:
           sudo cp -r /haide/kernel/msm-4.19/techpack/camera /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/techpack
           sudo cp -r /haide/kernel/msm-4.19/techpack/display /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/techpack
           sudo cp -r /haide/kernel/msm-4.19/techpack/video /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/techpack
-          
-          tree ${{ env.KERNEL_NAME }}/techpack
       - name: 💫 Get toolchains
         env:
           toolchains: "${{ toJSON(matrix.CONFIG.toolchains) }}"
@@ -306,7 +304,7 @@ jobs:
           export KBUILD_BUILD_HOST=Github-Action
           export KBUILD_BUILD_USER=$(echo ${{ github.actor }} | tr A-Z a-z)
           make ${{ env.ARGS }} ${{ env.KERNEL_DEFCONFIG_PATH }}
-          make ${{ env.ARGS }} BRAND_SHOW_FLAG=realme
+          make ${{ env.ARGS }} BRAND_SHOW_FLAG=realme KCFLAGS="-Wno-strict-prototypes"
           # tree ${{ env.OUT_DIR }}
 
       - name: 💛 Upload Image
