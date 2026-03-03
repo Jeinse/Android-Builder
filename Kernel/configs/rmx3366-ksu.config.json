@@ -3,7 +3,7 @@
     "kernelSource": {
       "name": "android_kernel_common_oneplus_sm8250",
       "repo": "https://github.com/Jeinse/realme_GTneo2-Q5pro-GTMasterExploratory-AndroidT-kernel-source.git",
-      "branch": "T-build",
+      "branch": "T-KernelSU-build",
       "device": "RMX3366",
       "defconfig": "vendor/rmx3366ksu_defconfig"
     },
