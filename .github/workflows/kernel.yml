@@ -131,6 +131,7 @@ jobs:
           sudo cp -r /haide/vendor /home/runner/work/Android-Builder
           sudo cp -r /haide/kernel /home/runner/work/Android-Builder
           sudo cp -r /haide/kernel /home/runner/work/Android-Builder/Android-Builder/
+          sudo export BRAND_SHOW_FLAG=realme
       - name: 💫 Get toolchains
         env:
           toolchains: "${{ toJSON(matrix.CONFIG.toolchains) }}"
