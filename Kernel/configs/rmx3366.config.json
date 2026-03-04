@@ -26,7 +26,7 @@
       }
     },
     "AnyKernel3": {
-      "use": true,
+      "use": false,
       "release": false
     },
     "enableKernelSU": false,
@@ -34,3 +34,4 @@
   }
 
 ]
+
