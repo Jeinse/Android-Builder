@@ -26,14 +26,11 @@
       }
     },
     "AnyKernel3": {
-      "use": false,
-      "release": true,
-      "custom": {
-        "repo": "",
-        "branch": ""
-      }
+      "use": true,
+      "release": false
     },
     "enableKernelSU": false,
     "enableLXC": false
   }
+
 ]
