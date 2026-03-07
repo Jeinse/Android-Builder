@@ -12,7 +12,6 @@
         "name": "proton-clang",
         "repo": "https://github.com/kdrag0n/proton-clang",
         "branch": "master",
-        #"binaryEnv": ["./bin"]
       },
        {
     "name": "clang",
@@ -30,7 +29,6 @@
       "ARCH": "arm64",
       "CC": "clang",
       "externalCommands": {
-        #"CLANG_TRIPLE": "clang-r450784d/bin/"
         "CROSS_COMPILE": "aarch64-linux-gnu-",
         "CROSS_COMPILE_ARM32": "arm-linux-gnueabi-",
         "LD": "ld.lld"
