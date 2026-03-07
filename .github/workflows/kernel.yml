@@ -164,7 +164,7 @@ jobs:
                   tar xvf "$filename" -C $toolchain_name
                   ;;
                 *.tar.gz)
-                  tar zxvf clang-r450784d.tar.gz -C $toolchain_name
+                  tar zxvf "$filename" -C $toolchain_name
                   ;;
                 *.rar)
                   unrar x "$filename" $toolchain_name
