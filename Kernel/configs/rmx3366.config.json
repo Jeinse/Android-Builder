@@ -8,11 +8,6 @@
       "defconfig": "vendor/rmx3366_defconfig"
     },
     "toolchains": [
-      {
-        "name": "proton-clang",
-        "repo": "https://github.com/kdrag0n/proton-clang",
-        "branch": "master",
-      },
        {
     "name": "clang",
     "url": "https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/android13-release/clang-r450784d.tar.gz",
