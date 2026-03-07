@@ -12,27 +12,16 @@
         "name": "proton-clang",
         "repo": "https://github.com/kdrag0n/proton-clang",
         "branch": "master",
-        //"binaryEnv": ["./bin"]
-      },
-       {
-    "name": "clang",
-    "url": "https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/android13-release/clang-r450784d.tar.gz",
-    "binaryEnv": ["./bin"]
-  },
-  {
-    "name": "gcc",
-    "url": "https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/refs/tags/android-12.1.0_r27.tar.gz",
-    "binaryEnv": ["bin"]
-  }
+        "binaryEnv": ["./bin"]
+      }
     ],
     "enableCcache": true,
     "params": {
       "ARCH": "arm64",
       "CC": "clang",
       "externalCommands": {
-        //"CLANG_TRIPLE": "clang-r450784d/bin/"
-        "CROSS_COMPILE": "aarch64-linux-gnu-",
-        "CROSS_COMPILE_ARM32": "arm-linux-gnueabi-",
+        "CROSS_COMPILE": "proton-clang/bin/aarch64-linux-gnu-",
+        "CROSS_COMPILE_ARM32": "proton-clang/bin/arm-linux-gnueabi-",
         "LD": "ld.lld"
       }
     },
