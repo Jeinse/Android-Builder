@@ -2,6 +2,7 @@ name: Build kernels
 
 on:
   workflow_dispatch:
+
 jobs:
   Read-configuration:
     name: 🐂 Parse *.config.json
@@ -29,7 +30,7 @@ jobs:
 
   Build-Kernel:
     name: "🐎 Build kernel"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs:
       - Read-configuration
     strategy:
@@ -141,7 +142,7 @@ jobs:
             if echo $toolchain | jq -e 'has("url")' > /dev/null; then
               # If from archive
               toolchain_url=$(echo $toolchain | jq -r ".url")
-              mkdir -p $toolchain_name
+              mkdir -p '$toolchain_name'
 
               # Download archive
               wget "$toolchain_url"
@@ -236,7 +237,7 @@ jobs:
           fi
 
           # Apply new KernelSU patches
-          curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s main
+          curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s v0.9.5
 
           echo -e "CONFIG_KPROBES=y" >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_DEFCONFIG_PATH }}
           echo -e "CONFIG_HAVE_KPROBES=y" >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_DEFCONFIG_PATH }}
@@ -300,7 +301,7 @@ jobs:
           # tree ${{ env.OUT_DIR }}
 
       - name: 💛 Upload Image
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         env:
           ARCH: ${{ steps.generate-args.outputs.ARCH }}
         with:
@@ -310,7 +311,7 @@ jobs:
           retention-days: 7
 
       - name: 💙 Upload Image.gz
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         env:
           ARCH: ${{ steps.generate-args.outputs.ARCH }}
         with:
@@ -320,7 +321,7 @@ jobs:
           retention-days: 7
 
       - name: 💙 Upload Image.gz-dtb
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         env:
           ARCH: ${{ steps.generate-args.outputs.ARCH }}
         with:
@@ -330,7 +331,7 @@ jobs:
           retention-days: 7
 
       - name: 💜 Upload dtb
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         env:
           ARCH: ${{ steps.generate-args.outputs.ARCH }}
         with:
@@ -340,7 +341,7 @@ jobs:
           retention-days: 7
 
       - name: ❤️ Upload dtbo.img
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         env:
           ARCH: ${{ steps.generate-args.outputs.ARCH }}
         with:
@@ -350,7 +351,7 @@ jobs:
           retention-days: 7
 
       - name: ☢️ Upload output directory
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         env:
           ARCH: ${{ steps.generate-args.outputs.ARCH }}
         with:
@@ -403,7 +404,7 @@ jobs:
       - name: "💾 Upload AnyKernel3 image => (${{ env.BUILD_DATE }})"
         env:
           ANYKERNEL3_FILE: "AnyKernel3-${{ env.KERNEL_NAME }}-${{ env.BUILD_DATE }}"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ env.USE_ANYKERNEL3 == 'true' }}
         with:
           name: "${{ env.ANYKERNEL3_FILE }}"
