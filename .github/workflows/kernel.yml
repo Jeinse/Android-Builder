@@ -245,6 +245,19 @@ jobs:
 
           cat arch/${{ env.ARCH }}/configs/${{ env.KERNEL_DEFCONFIG_PATH }}
 
+      - name: add susfs
+        run: |
+          sudo git clone --recursive -j $(nproc) --branch kernel-4.19 https://github.com/Jeinse/realme_GTneo2-Q5pro-GTMasterExploratory-AndroidT-vendor-source.git /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/
+          sudo cp /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/susfs4ksu/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/KernelSU/
+          sudo cp /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/susfs4ksu/kernel_patches/50_add_susfs_in_kernel-4.19.patch /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/
+          sudo cp -r /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/susfs4ksu/kernel_patches/fs/* /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/fs/
+          sudo cp -r /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/susfs4ksu/kernel_patches/include/linux/* /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/include/linux/
+          sudo cd /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/KernelSU
+          sudo patch -p1 < 10_enable_susfs_for_ksu.patch
+          sudo cd /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/
+          sudo patch -p1 < 50_add_susfs_in_kernel.patch
+
+
       - name: 😋 Setup LXC docker
         working-directory: ${{ env.KERNEL_NAME }}
         env:
@@ -357,6 +370,21 @@ jobs:
         with:
           name: ${{ env.KERNEL_NAME }}-${{ env.BUILD_DATE }}-Output
           path: ${{ env.OUT_DIR }}/arch/${{ env.ARCH }}/boot/
+          retention-days: 7
+       
+      - name: add build susfs
+        run: |
+         sudo cd /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/susfs4ksu
+         sudo ./build_ksu_susfs_tool.sh
+         sudo ./build_ksu_module.sh
+      
+      - name: ☢️ Upload susfs
+        uses: actions/upload-artifact@v4
+        env:
+          ARCH: ${{ steps.generate-args.outputs.ARCH }}
+        with:
+          name: susfs
+          path: /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/susfs4ksu/
           retention-days: 7
 
       - name: ⏰ Pack Anykernel3
