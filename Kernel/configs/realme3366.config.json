@@ -3,7 +3,7 @@
     "kernelSource": {
       "name": "android_kernel_realme_sm8250",
       "repo": "https://github.com/Jeinse/android_kernel_realme_sm8250.git",
-      "branch": "phoeniX-19112025",
+      "branch": "phoeniX-AOSP",
       "device": "RMX3366",
       "defconfig": "vendor/rmx3366_defconfig"
     },
