@@ -247,7 +247,7 @@ jobs:
 
       - name: add susfs
         run: |
-          sudo git clone --recursive -j $(nproc) --branch kernel-4.19 https://github.com/Jeinse/realme_GTneo2-Q5pro-GTMasterExploratory-AndroidT-vendor-source.git /home/susfs/
+          sudo git clone --recursive -j $(nproc) --branch kernel-4.19 https://gitlab.com/simonpunk/susfs4ksu.git /home/susfs/
           sudo cp /home/susfs/susfs4ksu/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/KernelSU/
           sudo cp /home/susfs/susfs4ksu/kernel_patches/50_add_susfs_in_kernel-4.19.patch /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/
           sudo cp -r /home/susfs/susfs4ksu/kernel_patches/fs/* /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/fs/
