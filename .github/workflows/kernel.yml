@@ -252,9 +252,10 @@ jobs:
           sudo cp /home/susfs/kernel_patches/50_add_susfs_in_kernel-4.19.patch /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/
           sudo cp -r /home/susfs/kernel_patches/fs/* /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/fs/
           sudo cp -r /home/susfs/kernel_patches/include/linux/* /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/include/linux/
-          sudo cd /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/KernelSU
+          ls
+          sudo -s cd /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/KernelSU
           sudo patch -p1 < 10_enable_susfs_for_ksu.patch
-          sudo cd /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/
+          sudo -s cd /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/
           sudo patch -p1 < 50_add_susfs_in_kernel.patch
 
 
