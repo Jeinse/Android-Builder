@@ -245,6 +245,22 @@ jobs:
 
           cat arch/${{ env.ARCH }}/configs/${{ env.KERNEL_DEFCONFIG_PATH }}
 
+      - name: add susfs
+        run: |
+          sudo git clone --recursive -j $(nproc) --branch kernel-4.19 https://gitlab.com/simonpunk/susfs4ksu.git /home/susfs/
+          sudo cp /home/susfs/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/KernelSU/
+          sudo cp /home/susfs/kernel_patches/50_add_susfs_in_kernel-4.19.patch /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/
+          sudo cp -r /home/susfs/kernel_patches/fs/* /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/fs/
+          sudo cp -r /home/susfs/kernel_patches/include/linux/* /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/include/linux/
+          ls
+          sudo bash -c "cd /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/KernelSU && patch -p1 < 10_enable_susfs_for_ksu.patch"
+          #sudo -s cd /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/KernelSU
+          #sudo patch -p1 < 10_enable_susfs_for_ksu.patch
+          sudo bash -c "cd /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/ && patch -p1 < 50_add_susfs_in_kernel.patch"
+          #sudo -s cd /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/
+          #sudo patch -p1 < 50_add_susfs_in_kernel.patch
+
+
       - name: 😋 Setup LXC docker
         working-directory: ${{ env.KERNEL_NAME }}
         env:
@@ -357,6 +373,25 @@ jobs:
         with:
           name: ${{ env.KERNEL_NAME }}-${{ env.BUILD_DATE }}-Output
           path: ${{ env.OUT_DIR }}/arch/${{ env.ARCH }}/boot/
+          retention-days: 7
+       
+      - name: add build susfs
+        run: |
+         sudo bash -c "cd /home/susfs/ && ./build_ksu_susfs_tool.sh"
+         sudo bash -c "cd /home/susfs/ && ./build_ksu_module.sh"
+         #sudo cd /home/susfs/
+         #sudo ./build_ksu_susfs_tool.sh
+         #sudo ./build_ksu_module.sh
+      
+      - name: ☢️ Upload susfs
+        uses: actions/upload-artifact@v4
+        env:
+          ARCH: ${{ steps.generate-args.outputs.ARCH }}
+        with:
+          name: susfs
+          path: |
+            /home/susfs/
+            !/home/susfs/.git
           retention-days: 7
 
       - name: ⏰ Pack Anykernel3
