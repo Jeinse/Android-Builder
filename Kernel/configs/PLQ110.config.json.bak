@@ -1,11 +1,11 @@
 [
   {
     "kernelSource": {
-      "name": "android_kernel_common_oneplus_sm8750",
-      "repo": "https://github.com/OnePlusOSS/android_kernel_common_oneplus_sm8750.git",
-      "branch": "oneplus/sm8750_b_16.0.0_ace_6",
-      "device": "PLQ110",
-      "defconfig": "gki_defconfig"
+      "name": "android_kernel_realme_sm8250",
+      "repo": "https://github.com/Jeinse/android_kernel_realme_sm8250.git",
+      "branch": "phoeniX-19112025",
+      "device": "RMX3366",
+      "defconfig": "vendor/rmx3366_defconfig"
     },
     "toolchains": [
       {

@@ -1,12 +1,7 @@
 name: Build kernels
 
 on:
-  push:
-    paths:
-      - ".github/workflows/kernel.yml"
   workflow_dispatch:
-  schedule:
-    - cron: "14 13 * * 5"
 
 jobs:
   Read-configuration:
@@ -35,7 +30,7 @@ jobs:
 
   Build-Kernel:
     name: "🐎 Build kernel"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs:
       - Read-configuration
     strategy:
@@ -88,9 +83,9 @@ jobs:
       - name: ⭐ Install prerequisites
         run: |
           sudo apt-get update
-          sudo apt-get install -y curl git ftp lftp wget libarchive-tools ccache python2 python2-dev python3
-          sudo apt-get install -y pngcrush schedtool dpkg-dev liblz4-tool make optipng maven device-tree-compiler 
-          sudo apt-get install -y libc6-dev-i386 lib32ncurses5-dev libx11-dev lib32z-dev libgl1-mesa-dev xsltproc
+          sudo apt-get install -y curl git ftp lftp wget libarchive-tools ccache python2 python2-dev python3 libelf-dev
+          sudo apt-get install -y pngcrush schedtool dpkg-dev liblz4-tool make optipng maven device-tree-compiler
+          sudo apt-get install -y libc6-dev-i386 lib32ncurses5-dev libx11-dev lib32z-dev libgl1-mesa-dev xsltproc dwarves
           sudo apt-get install -y libxml2-utils libbz2-dev libbz2-1.0 libghc-bzlib-dev squashfs-tools lzop flex tree
           sudo apt-get install -y build-essential bc gcc-aarch64-linux-gnu gcc-arm-linux-gnueabi libssl-dev libfl-dev
           sudo apt-get install -y pwgen libswitch-perl policycoreutils minicom libxml-sax-base-perl libxml-simple-perl 
@@ -130,7 +125,14 @@ jobs:
         run: |
           git clone --recursive --depth=1 -j $(nproc) --branch ${{ env.KERNEL_BRANCH }} ${{ env.KERNEL_REPO }} ${{ env.KERNEL_NAME }}
           # tree ${{ env.KERNEL_NAME }}
-
+      - name: add haide
+        run: |
+          sudo git clone --recursive --depth=1 -j $(nproc) --branch T-build https://github.com/Jeinse/realme_GTneo2-Q5pro-GTMasterExploratory-AndroidT-vendor-source.git /haide
+          
+          sudo cp -r /haide/vendor /home/runner/work/Android-Builder
+          sudo cp -r /haide/kernel/msm-4.19/techpack/camera /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/techpack
+          sudo cp -r /haide/kernel/msm-4.19/techpack/display /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/techpack
+          sudo cp -r /haide/kernel/msm-4.19/techpack/video /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/techpack
       - name: 💫 Get toolchains
         env:
           toolchains: "${{ toJSON(matrix.CONFIG.toolchains) }}"
@@ -147,7 +149,7 @@ jobs:
             if echo $toolchain | jq -e 'has("url")' > /dev/null; then
               # If from archive
               toolchain_url=$(echo $toolchain | jq -r ".url")
-              mkdir -p $toolchain_name
+              mkdir -p "$toolchain_name"
 
               # Download archive
               wget "$toolchain_url"
@@ -242,7 +244,7 @@ jobs:
           fi
 
           # Apply new KernelSU patches
-          curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s main
+          curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s v0.9.5
 
           echo -e "CONFIG_KPROBES=y" >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_DEFCONFIG_PATH }}
           echo -e "CONFIG_HAVE_KPROBES=y" >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_DEFCONFIG_PATH }}
@@ -302,11 +304,11 @@ jobs:
           export KBUILD_BUILD_HOST=Github-Action
           export KBUILD_BUILD_USER=$(echo ${{ github.actor }} | tr A-Z a-z)
           make ${{ env.ARGS }} ${{ env.KERNEL_DEFCONFIG_PATH }}
-          make ${{ env.ARGS }}
+          make ${{ env.ARGS }} BRAND_SHOW_FLAG=realme KCFLAGS="-Wno-strict-prototypes"
           # tree ${{ env.OUT_DIR }}
 
       - name: 💛 Upload Image
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         env:
           ARCH: ${{ steps.generate-args.outputs.ARCH }}
         with:
@@ -316,7 +318,7 @@ jobs:
           retention-days: 7
 
       - name: 💙 Upload Image.gz
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         env:
           ARCH: ${{ steps.generate-args.outputs.ARCH }}
         with:
@@ -326,7 +328,7 @@ jobs:
           retention-days: 7
 
       - name: 💙 Upload Image.gz-dtb
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         env:
           ARCH: ${{ steps.generate-args.outputs.ARCH }}
         with:
@@ -336,7 +338,7 @@ jobs:
           retention-days: 7
 
       - name: 💜 Upload dtb
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         env:
           ARCH: ${{ steps.generate-args.outputs.ARCH }}
         with:
@@ -346,7 +348,7 @@ jobs:
           retention-days: 7
 
       - name: ❤️ Upload dtbo.img
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         env:
           ARCH: ${{ steps.generate-args.outputs.ARCH }}
         with:
@@ -356,7 +358,7 @@ jobs:
           retention-days: 7
 
       - name: ☢️ Upload output directory
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         env:
           ARCH: ${{ steps.generate-args.outputs.ARCH }}
         with:
@@ -409,7 +411,7 @@ jobs:
       - name: "💾 Upload AnyKernel3 image => (${{ env.BUILD_DATE }})"
         env:
           ANYKERNEL3_FILE: "AnyKernel3-${{ env.KERNEL_NAME }}-${{ env.BUILD_DATE }}"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: ${{ env.USE_ANYKERNEL3 == 'true' }}
         with:
           name: "${{ env.ANYKERNEL3_FILE }}"
