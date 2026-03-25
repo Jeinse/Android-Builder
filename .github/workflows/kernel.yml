@@ -248,10 +248,10 @@ jobs:
       - name: add susfs
         run: |
           sudo git clone --recursive -j $(nproc) --branch kernel-4.19 https://gitlab.com/simonpunk/susfs4ksu.git /home/susfs/
-          sudo cp /home/susfs/susfs4ksu/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/KernelSU/
-          sudo cp /home/susfs/susfs4ksu/kernel_patches/50_add_susfs_in_kernel-4.19.patch /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/
-          sudo cp -r /home/susfs/susfs4ksu/kernel_patches/fs/* /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/fs/
-          sudo cp -r /home/susfs/susfs4ksu/kernel_patches/include/linux/* /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/include/linux/
+          sudo cp /home/susfs/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/KernelSU/
+          sudo cp /home/susfs/kernel_patches/50_add_susfs_in_kernel-4.19.patch /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/
+          sudo cp -r /home/susfs/kernel_patches/fs/* /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/fs/
+          sudo cp -r /home/susfs/kernel_patches/include/linux/* /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/include/linux/
           sudo cd /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/KernelSU
           sudo patch -p1 < 10_enable_susfs_for_ksu.patch
           sudo cd /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/
@@ -374,7 +374,7 @@ jobs:
        
       - name: add build susfs
         run: |
-         sudo cd /home/susfs/susfs4ksu
+         sudo cd /home/susfs/
          sudo ./build_ksu_susfs_tool.sh
          sudo ./build_ksu_module.sh
       
@@ -384,7 +384,9 @@ jobs:
           ARCH: ${{ steps.generate-args.outputs.ARCH }}
         with:
           name: susfs
-          path: /home/susfs/susfs4ksu/
+          path: |
+            /home/susfs/
+            !/home/susfs/.git
           retention-days: 7
 
       - name: ⏰ Pack Anykernel3
