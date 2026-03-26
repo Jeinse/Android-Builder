@@ -241,6 +241,7 @@ jobs:
           sudo git clone --recursive -j $(nproc) --branch main https://github.com/SukiSU-Ultra/SukiSU_patch.git /home/patch/
           sudo cp /home/patch/4.19/ksu_hooks_sukisu_4.19.patch /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/
           sudo bash -c "cd /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/ && patch -p1 < ksu_hooks_sukisu_4.19.patch"
+          sudo bash -c "cd /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/ && patch -p1 < path_umount.patch"
           #echo -e "CONFIG_KPROBES=y" >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_DEFCONFIG_PATH }}
           #echo -e "CONFIG_HAVE_KPROBES=y" >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_DEFCONFIG_PATH }}
           #echo -e "CONFIG_KPROBE_EVENTS=y" >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_DEFCONFIG_PATH }}
