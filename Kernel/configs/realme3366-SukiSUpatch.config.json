@@ -1,0 +1,38 @@
+[
+  {
+    "kernelSource": {
+      "name": "android_kernel_realme_sm8250_SukiSUpatchsksu",
+      "repo": "https://github.com/Jeinse/android_kernel_realme_sm8250.git",
+      "branch": "phoeniX-SukiSUpatch",
+      "device": "RMX3366",
+      "defconfig": "vendor/rmx3366_defconfig"
+    },
+    "toolchains": [
+      {
+        "name": "proton-clang",
+        "repo": "https://github.com/kdrag0n/proton-clang",
+        "branch": "master",
+        "binaryEnv": ["./bin"]
+      }
+    ],
+    "enableCcache": true,
+    "params": {
+      "ARCH": "arm64",
+      "CC": "clang",
+      "externalCommands": {
+        "CROSS_COMPILE": "proton-clang/bin/aarch64-linux-gnu-",
+        "CROSS_COMPILE_ARM32": "proton-clang/bin/arm-linux-gnueabi-"
+      }
+    },
+    "AnyKernel3": {
+      "use": false,
+      "release": true,
+      "custom": {
+        "repo": "",
+        "branch": ""
+      }
+    },
+    "enableKernelSU": true,
+    "enableLXC": false
+  }
+]
