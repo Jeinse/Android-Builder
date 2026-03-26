@@ -5,7 +5,7 @@ on:
 
 jobs:
   Read-configuration:
-    name: 🐂 Parse *.config.json
+    name: 🐂 Parse realme3366-sksu.config.json
     runs-on: ubuntu-latest
     outputs:
       CONFIGS: ${{ steps.generate-matrix.outputs.CONFIGS }}
@@ -20,7 +20,7 @@ jobs:
         id: generate-matrix
         run: |
           echo "CONFIGS<<EOF" >> $GITHUB_OUTPUT
-          jq -s '[.[][]]' Kernel/configs/*.config.json >> $GITHUB_OUTPUT
+          jq -s '[.[][]]' Kernel/configs/realme3366-sksu.config.json >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       # Set compile time.
