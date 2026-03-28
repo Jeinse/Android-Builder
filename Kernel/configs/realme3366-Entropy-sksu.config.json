@@ -5,7 +5,7 @@
       "repo": "https://github.com/Jeinse/android_kernel_realme_sm8250.git",
       "branch": "phoeniX-AOSP",
       "device": "RMX3366",
-      "defconfig": "vendor/rmx3366old_defconfig"
+      "defconfig": "vendor/kona-perf_defconfig"
     },
     "toolchains": [
       {
@@ -22,6 +22,11 @@
       "externalCommands": {
         "CROSS_COMPILE": "proton-clang/bin/aarch64-linux-gnu-",
         "CROSS_COMPILE_ARM32": "proton-clang/bin/arm-linux-gnueabi-"
+        "AR":"llvm-ar"
+        "NM": "llvm-nm",
+        "OBJCOPY": "llvm-objcopy",
+        "OBJDUMP": "llvm-objdump",
+        "STRIP": "llvm-strip"
       }
     },
     "AnyKernel3": {
