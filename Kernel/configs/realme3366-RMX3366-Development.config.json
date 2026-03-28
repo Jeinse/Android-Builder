@@ -3,7 +3,7 @@
     "kernelSource": {
       "name": "android_kernel_realme_sm8250_SukiSUpatchsksu",
       "repo": "https://github.com/RMX3366-Development/android_kernel_realme_sm8250.git",
-      "branch": "lineage-23.1",
+      "branch": "phoeniX-092025",
       "device": "RMX3366",
       "defconfig": "vendor/kona-perf_defconfig"
     },
