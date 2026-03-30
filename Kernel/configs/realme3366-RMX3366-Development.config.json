@@ -4,7 +4,7 @@
       "name": "android_kernel_realme_sm8250_SukiSUpatchsksu",
       "repo": "https://github.com/RMX3366-Development/android_kernel_realme_sm8250.git",
       "branch": "lineage-23.1",
-      "device": "RMX3366",
+      "device": "kona",
       "defconfig": "vendor/kona-perf_defconfig vendor/oplus.config"
     },
     "toolchains": [

@@ -1,4 +1,4 @@
-name: Build kernels SukiSU_patch
+name: Build kernel SukiSUpatch
 
 on:
   workflow_dispatch:
@@ -238,15 +238,12 @@ jobs:
 
           # Apply new KernelSU patches
           curl -LSs "https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/main/kernel/setup.sh" | bash
-          sudo git clone --recursive -j $(nproc) --branch main https://github.com/ReSukiSU/ReSukiSU_Patches.git /home/patch/
-          sudo cp /home/patch/scope-minimized/kernel-4.19.patch /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/
-          sudo bash -c "cd /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/ && patch -p1 < kernel-4.19.patch"
-          sudo bash -c "cd /home/runner/work/Android-Builder/Android-Builder/${{ env.KERNEL_NAME }}/ && patch -p1 < path_umount.patch"
+
           #echo -e "CONFIG_KPROBES=y" >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_DEFCONFIG_PATH }}
           #echo -e "CONFIG_HAVE_KPROBES=y" >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_DEFCONFIG_PATH }}
           #echo -e "CONFIG_KPROBE_EVENTS=y" >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_DEFCONFIG_PATH }}
 
-          cat arch/${{ env.ARCH }}/configs/${{ env.KERNEL_DEFCONFIG_PATH }}
+          #cat arch/${{ env.ARCH }}/configs/${{ env.KERNEL_DEFCONFIG_PATH }}
 
       - name: 😋 Setup LXC docker
         working-directory: ${{ env.KERNEL_NAME }}
