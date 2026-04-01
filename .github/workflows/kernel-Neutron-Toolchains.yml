@@ -132,12 +132,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install --only-upgrade libstdc++6
           mkdir -p neutron-clang
-          sudo bash -c "cd ${{ github.workspace }}/neutron-clang && curl -LO "https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman""
-          sudo bash -c "cd ${{ github.workspace }}/neutron-clang && chmod +x antman"
-          sudo bash -c "cd ${{ github.workspace }}/neutron-clang && ./antman -S"
-          sudo bash -c "cd ${{ github.workspace }}/neutron-clang && ./antman --patch=glibc"
-          sudo bash -c "cd ${{ github.workspace }}/neutron-clang && chmod -R +x bin/"
-          sudo bash -c "cd ${{ github.workspace }}/neutron-clang && sudo chown -R $USER:$USER ."
+          cd ${{ github.workspace }}/neutron-clang && curl -LO "https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman"
+          cd ${{ github.workspace }}/neutron-clang && chmod +x antman
+          cd ${{ github.workspace }}/neutron-clang && ./antman -S
+          cd ${{ github.workspace }}/neutron-clang && ./antman --patch=glibc
           echo "${{ github.workspace }}/neutron-clang/bin" >> $GITHUB_PATH
 
       - name: 😎 Set build args
