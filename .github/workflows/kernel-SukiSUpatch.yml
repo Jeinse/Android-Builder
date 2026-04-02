@@ -30,7 +30,7 @@ jobs:
 
   Build-Kernel:
     name: "🐎 Build kernel"
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     needs:
       - Read-configuration
     strategy:
