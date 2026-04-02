@@ -82,7 +82,7 @@ jobs:
       # Install prerequisites for Ubuntu
       - name: ⭐ Install prerequisites
         run: |
-          wget https://mirrors.tscak.com/ubuntu/pool/main/m/make-dfsg/make_4.1-6_amd64.deb
+          wget http://archive.ubuntu.com/ubuntu/pool/main/m/make-dfsg/make_4.1-9.1ubuntu1_amd64.deb
           sudo apt install  ./make_4.1-9.1ubuntu1_amd64.deb
           sudo apt-get update
           sudo apt-get install -y curl git ftp lftp wget libarchive-tools ccache python2 python2-dev python3
