@@ -83,7 +83,7 @@ jobs:
       - name: ⭐ Install prerequisites
         run: |
           wget http://archive.ubuntu.com/ubuntu/pool/main/m/make-dfsg/make_4.1-9.1ubuntu1_amd64.deb
-          sudo apt install  ./make_4.1-9.1ubuntu1_amd64.deb
+          sudo apt install  ./make_4.1-9.1ubuntu1_amd64.deb --allow-downgrades -y
           sudo apt-get update
           sudo apt-get install -y curl git ftp lftp wget libarchive-tools ccache python2 python2-dev python3
           sudo apt-get install -y pngcrush schedtool dpkg-dev liblz4-tool optipng maven device-tree-compiler 
