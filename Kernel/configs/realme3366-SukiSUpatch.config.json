@@ -31,11 +31,11 @@
       }
     },
     "AnyKernel3": {
-      "use": false,
-      "release": true,
+      "use": true,
+      "release": false,
       "custom": {
-        "repo": "",
-        "branch": ""
+        "repo": "https://github.com/Jeinse/AnyKernel3/",
+        "branch": "rmx3366"
       }
     },
     "enableKernelSU": true,
