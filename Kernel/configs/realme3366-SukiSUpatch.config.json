@@ -3,7 +3,7 @@
     "kernelSource": {
       "name": "android_kernel_realme_sm8250_SukiSUpatchsksu",
       "repo": "https://github.com/Jeinse/android_kernel_realme_sm8250.git",
-      "branch": "Entropy-new",
+      "branch": "Entropy-ksu",
       "device": "kona",
       "defconfig": "vendor/kona-perf_defconfig vendor/oplus.config"
     },
