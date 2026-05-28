@@ -1,6 +1,6 @@
 name: Build kernel Neutron-Toolchains
 
-于:
+on:
   workflow_dispatch:
 
 jobs:
