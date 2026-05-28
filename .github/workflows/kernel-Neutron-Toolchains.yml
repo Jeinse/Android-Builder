@@ -1,6 +1,6 @@
 name: Build kernel Neutron-Toolchains
 
-on:
+于:
   workflow_dispatch:
 
 jobs:
@@ -248,6 +248,7 @@ jobs:
         working-directory: ${{ env.KERNEL_NAME }}
         env:
           ARGS: ${{ steps.generate-args.outputs.ARGS }}
+          KBUILD_BUILD_TIMESTAMP: "Sat Jun 29 00:12:50 CST 2024"
         run: |
           echo "🤔 PATH Variable: $PATH"
           export KBUILD_BUILD_HOST=Github-Action
