@@ -38,7 +38,7 @@
             "ARCH": "arm64",
             "CC": "clang",
             "externalCommands": {
-                "CROSS_COMPILE_COMPAT": "aarch64-linux-gnu--",
+                "CROSS_COMPILE_COMPAT": "aarch64-linux-gnu-",
                 "CROSS_COMPILE_ARM32": "arm-linux-gnueabi-",
                 "AR": "llvm-ar",
                 "NM": "llvm-nm",
