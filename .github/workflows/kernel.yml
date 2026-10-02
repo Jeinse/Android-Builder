@@ -138,6 +138,43 @@ jobs:
           cd ${{ github.workspace }}/neutron-clang && ./antman --patch=glibc
           echo "${{ github.workspace }}/neutron-clang/bin" >> $GITHUB_PATH
 
+      - name: 😎 Set build args
+        id: generate-args
+        env:
+          PARAMS: "${{ toJSON(matrix.CONFIG.params) }}"
+          THREAD: $(nproc --all)
+        run: |
+          echo "🤔 PATH Variable: $PATH"
+
+          ARCH=$(echo $PARAMS | jq -r ".ARCH")
+          CC=$(echo $PARAMS | jq -r ".CC")
+
+          args="-j${{ env.THREAD }} O=${{ env.OUT_DIR }} ARCH=$ARCH"
+          if [ -n "$CC" ]; then
+
+            if [[ "$CC" == *"/"* ]]; then
+              CC=${{ env.WORKSPACE }}/$CC
+            fi
+
+            if [ ${{ env.ENABLE_CCACHE }} = true ]; then
+              args="$args CC=\"ccache $CC\""
+            else
+              args="$args CC=$CC"
+            fi
+          fi
+          while read -r externalCommand; do
+            key=$(echo "$externalCommand" | cut -d= -f1)
+            value=$(echo "$externalCommand" | cut -d= -f2)
+            if [[ "$value" == *"/"* ]]; then
+              value="${{ env.WORKSPACE }}/$value"
+            fi
+            args="$args $key=$value"
+          done < <(jq -r '.externalCommands | to_entries[] | "\(.key)=\(.value)"' <<< "$PARAMS")
+
+          echo "ARCH=$ARCH" >> $GITHUB_OUTPUT
+          echo "ARGS=$args" >> $GITHUB_OUTPUT
+
+          echo "🤔 $args"
 
       - name: 😋 Setup KernelSU
         working-directory: ${{ env.KERNEL_NAME }}
