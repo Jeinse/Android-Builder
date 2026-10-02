@@ -1,9 +1,6 @@
 name: Build kernels
 
 on:
-  push:
-    paths:
-      - ".github/workflows/kernel.yml"
   workflow_dispatch:
 
 jobs:
