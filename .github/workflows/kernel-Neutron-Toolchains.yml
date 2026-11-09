@@ -202,6 +202,43 @@ jobs:
 
           #cat arch/${{ env.ARCH }}/configs/${{ env.KERNEL_DEFCONFIG_PATH }}
 
+      - name: Apply realme_sm8250 SUSFS patches
+        working-directory: ${{ env.KERNEL_NAME }}
+        if: ${{ env.ENABLE_KERNELSU == 'true' }}
+        shell: bash
+        run: |
+          curl -fLSs "https://raw.githubusercontent.com/Jeinse/realme_sm8250_susfs_patches/main/susfs_inline_hook_patches.sh" | bash
+
+      - name: Set KSU and SUSFS for DEFCONFIG
+        working-directory: ${{ env.KERNEL_NAME }}
+        env:
+          KERNEL_ARCH: ${{ steps.generate-args.outputs.ARCH }}
+        if: ${{ env.ENABLE_KERNELSU == 'true' }}
+        shell: bash
+        run: |
+          read -r DEFCONFIG_NAME _ <<< "$KERNEL_DEFCONFIG_PATH"
+          test -f "./arch/${KERNEL_ARCH}/configs/${DEFCONFIG_NAME}"
+
+          echo "CONFIG_KSU_SUSFS=y" >> "./arch/${KERNEL_ARCH}/configs/${DEFCONFIG_NAME}"
+          echo "CONFIG_KSU_SUSFS_SUS_PATH=y" >> "./arch/${KERNEL_ARCH}/configs/${DEFCONFIG_NAME}"
+          echo "CONFIG_KSU_SUSFS_SUS_MOUNT=y" >> "./arch/${KERNEL_ARCH}/configs/${DEFCONFIG_NAME}"
+          echo "CONFIG_KSU_SUSFS_SUS_KSTAT=y" >> "./arch/${KERNEL_ARCH}/configs/${DEFCONFIG_NAME}"
+          echo "CONFIG_KSU_SUSFS_SPOOF_UNAME=y" >> "./arch/${KERNEL_ARCH}/configs/${DEFCONFIG_NAME}"
+          echo "CONFIG_KSU_SUSFS_ENABLE_LOG=y" >> "./arch/${KERNEL_ARCH}/configs/${DEFCONFIG_NAME}"
+          echo "CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS=y" >> "./arch/${KERNEL_ARCH}/configs/${DEFCONFIG_NAME}"
+          echo "CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=y" >> "./arch/${KERNEL_ARCH}/configs/${DEFCONFIG_NAME}"
+          echo "CONFIG_KSU_SUSFS_OPEN_REDIRECT=y" >> "./arch/${KERNEL_ARCH}/configs/${DEFCONFIG_NAME}"
+          echo "CONFIG_KSU_SUSFS_SUS_MAP=y" >> "./arch/${KERNEL_ARCH}/configs/${DEFCONFIG_NAME}"
+
+          if grep -q "^config KSU_SUSFS_PRIORITY_UID_FILTER$" "drivers/kernelsu/Kconfig"; then
+            echo "CONFIG_KSU_SUSFS_PRIORITY_UID_FILTER=y" >> "./arch/${KERNEL_ARCH}/configs/${DEFCONFIG_NAME}"
+          fi
+
+          if grep -q "THREAD_INFO_IN_TASK" "drivers/kernelsu/Kconfig"; then
+            echo "CONFIG_THREAD_INFO_IN_TASK=y" >> "./arch/${KERNEL_ARCH}/configs/${DEFCONFIG_NAME}"
+
+          fi
+
       - name: 😋 Setup LXC docker
         working-directory: ${{ env.KERNEL_NAME }}
         env:
