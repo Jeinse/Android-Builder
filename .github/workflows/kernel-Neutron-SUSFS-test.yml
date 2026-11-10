@@ -1,5 +1,5 @@
-name: Build kernels-Entropy-SUSFS-test
-run-name: 'SUSFS test · ${{ inputs.susfs_patches_ref }}'
+name: Build kernel Neutron-SUSFS-test
+run-name: 'Neutron SUSFS test · ${{ inputs.susfs_patches_ref }}'
 
 on:
   workflow_dispatch:
@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   Read-configuration:
-    name: 🐂 Parse realme3366-Entropy-sksu.config.json
+    name: 🐂 Parse realme3366-SukiSUpatch.config.json
     runs-on: ubuntu-latest
     outputs:
       CONFIGS: ${{ steps.generate-matrix.outputs.CONFIGS }}
@@ -71,7 +71,7 @@ jobs:
         id: generate-matrix
         run: |
           echo "CONFIGS<<EOF" >> $GITHUB_OUTPUT
-          jq -s '[.[][]]' Kernel/configs/realme3366-Entropy-sksu.config.json >> $GITHUB_OUTPUT
+          jq -s '[.[][]]' Kernel/configs/realme3366-SukiSUpatch.config.json >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       # Set compile time.
@@ -114,8 +114,8 @@ jobs:
       ENABLE_LXC: ${{ matrix.CONFIG.enableLXC }}
 
       # Set output & ccache directory
-      OUT_DIR: "${{ github.workspace }}/out-susfs-test"
-      CCACHE_DIR: "${{ github.workspace }}/ccache-susfs-test"
+      OUT_DIR: "${{ github.workspace }}/out-neutron-susfs-test"
+      CCACHE_DIR: "${{ github.workspace }}/ccache-neutron-susfs-test"
     steps:
       # Set swap space
       - name: 📐 Set swap to 10G
@@ -130,9 +130,11 @@ jobs:
       # Install prerequisites for Ubuntu
       - name: ⭐ Install prerequisites
         run: |
+          wget http://archive.ubuntu.com/ubuntu/pool/main/m/make-dfsg/make_4.1-9.1ubuntu1_amd64.deb
+          sudo apt install  ./make_4.1-9.1ubuntu1_amd64.deb --allow-downgrades -y
           sudo apt-get update
           sudo apt-get install -y curl git ftp lftp wget libarchive-tools ccache python2 python2-dev python3
-          sudo apt-get install -y pngcrush schedtool dpkg-dev liblz4-tool make optipng maven device-tree-compiler 
+          sudo apt-get install -y pngcrush schedtool dpkg-dev liblz4-tool optipng maven device-tree-compiler 
           sudo apt-get install -y libc6-dev-i386 lib32ncurses5-dev libx11-dev lib32z-dev libgl1-mesa-dev xsltproc
           sudo apt-get install -y libxml2-utils libbz2-dev libbz2-1.0 libghc-bzlib-dev squashfs-tools lzop flex tree
           sudo apt-get install -y build-essential bc gcc-aarch64-linux-gnu gcc-arm-linux-gnueabi libssl-dev libfl-dev
@@ -163,9 +165,9 @@ jobs:
           path: |
             ${{ env.OUT_DIR }}
             ${{ env.CCACHE_DIR }}
-          key: cache-susfs-test-${{ env.KERNEL_NAME }}-${{ needs.Read-configuration.outputs.SUSFS_PATCHES_COMMIT }}-${{env.HASH}}-${{ env.BUILD_DATE }}
+          key: cache-neutron-susfs-test-${{ env.KERNEL_NAME }}-${{ needs.Read-configuration.outputs.SUSFS_PATCHES_COMMIT }}-${{env.HASH}}-${{ env.BUILD_DATE }}
           restore-keys: |
-            cache-susfs-test-${{ env.KERNEL_NAME }}-${{ needs.Read-configuration.outputs.SUSFS_PATCHES_COMMIT }}-${{env.HASH}}-
+            cache-neutron-susfs-test-${{ env.KERNEL_NAME }}-${{ needs.Read-configuration.outputs.SUSFS_PATCHES_COMMIT }}-${{env.HASH}}-
 
       - name: 🌟 Clone kernel source => (${{ env.KERNEL_REPO }})
         run: |
@@ -173,62 +175,16 @@ jobs:
           # tree ${{ env.KERNEL_NAME }}
 
       - name: 💫 Get toolchains
-        env:
-          toolchains: "${{ toJSON(matrix.CONFIG.toolchains) }}"
         run: |
-          toolchains_num="$(echo $toolchains | jq 'length')"
-          echo "🤔 There is $toolchains_num defined toolchains."
-
-          for ((i=0;i<toolchains_num;i++)); do
-            toolchain=$(echo $toolchains | jq -r ".[$i]")
-
-            toolchain_name=$(echo $toolchain | jq -r ".name")
-            
-            # From archive
-            if echo $toolchain | jq -e 'has("url")' > /dev/null; then
-              # If from archive
-              toolchain_url=$(echo $toolchain | jq -r ".url")
-              mkdir -p '$toolchain_name'
-
-              # Download archive
-              wget "$toolchain_url"
-
-              # Get filename
-              filename="${toolchain_url##*/}"
-              case "$filename" in
-                *.zip)
-                  unzip -d $toolchain_name "$filename"
-                  ;;
-                *.tar)
-                  tar xvf "$filename" -C $toolchain_name
-                  ;;
-                *.tar.gz)
-                  tar zxvf "$filename" -C $toolchain_name
-                  ;;
-                *.rar)
-                  unrar x "$filename" $toolchain_name
-                  ;;
-                *)
-                  echo "unknown file type: $filename"
-                  ;;
-              esac
-              # Delete file to avoid duplicate name conflicts 
-              rm $filename
-
-              echo "🤔 Download $toolchain_name => ($toolchain_url)"
-            else
-              # If from git
-              toolchain_repo=$(echo $toolchain | jq -r ".repo")
-              toolchain_branch=$(echo $toolchain | jq -r ".branch")
-              git clone --recursive --depth=1 -j $(nproc) --branch $toolchain_branch $toolchain_repo $toolchain_name
-
-              echo "🤔 Clone $toolchain_name => ($toolchain_repo)"
-            fi
-
-            jq -r ".binaryEnv[] | tostring" <<< "$toolchain" | while read -r subPath; do
-              echo "${{ env.WORKSPACE }}/$toolchain_name/$subPath" >> $GITHUB_PATH
-            done
-          done
+          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get install --only-upgrade libstdc++6
+          mkdir -p neutron-clang
+          cd ${{ github.workspace }}/neutron-clang && curl -LO "https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman"
+          cd ${{ github.workspace }}/neutron-clang && chmod +x antman
+          cd ${{ github.workspace }}/neutron-clang && ./antman -S
+          cd ${{ github.workspace }}/neutron-clang && ./antman --patch=glibc
+          echo "${{ github.workspace }}/neutron-clang/bin" >> $GITHUB_PATH
 
       - name: 😎 Set build args
         id: generate-args
@@ -283,7 +239,8 @@ jobs:
           fi
 
           # Apply new KernelSU patches
-          curl -LSs "https://raw.githubusercontent.com/ReSukiSU/ReSukiSU/main/kernel/setup.sh" | bash
+          curl -LSs "https://raw.githubusercontent.com/Baka-SU/BakaSU/main/kernel/setup.sh" | bash
+
 
           #echo -e "CONFIG_KPROBES=y" >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_DEFCONFIG_PATH }}
           #echo -e "CONFIG_HAVE_KPROBES=y" >> arch/${{ env.ARCH }}/configs/${{ env.KERNEL_DEFCONFIG_PATH }}
@@ -388,6 +345,7 @@ jobs:
         working-directory: ${{ env.KERNEL_NAME }}
         env:
           ARGS: ${{ steps.generate-args.outputs.ARGS }}
+          KBUILD_BUILD_TIMESTAMP: "Sat Jun 29 00:12:50 CST 2024"
         run: |
           echo "🤔 PATH Variable: $PATH"
           export KBUILD_BUILD_HOST=Github-Action
