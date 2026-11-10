@@ -207,7 +207,7 @@ jobs:
         if: ${{ env.ENABLE_KERNELSU == 'true' }}
         shell: bash
         run: |
-          curl -fLSs "https://raw.githubusercontent.com/Jeinse/realme_sm8250_susfs_patches/main/susfs_inline_hook_patches.sh" | bash
+          curl -fLSs "https://raw.githubusercontent.com/Jeinse/realme_sm8250_susfs_patches/jack-4b0766bdf5d5-d2c57ecaaf/susfs_inline_hook_patches.sh" | bash
 
       - name: Set KSU and SUSFS for DEFCONFIG
         working-directory: ${{ env.KERNEL_NAME }}
